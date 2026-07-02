@@ -13,36 +13,53 @@ The objective is to demonstrate a real-world DevOps workflow from source code ma
 ## Architecture
 
 ```
-                    Developer
-                        │
-                        ▼
-                  GitHub Repository
-                        │
-                  Git Webhook
-                        │
-                        ▼
-                   Jenkins Server
-                        │
-          Build Docker Image
-                        │
-          Push Image to Docker Hub
-                        │
-                        ▼
-                  AWS EC2 Instance
-                        │
-              Pull Latest Docker Image
-                        │
-              Run Docker Container
-                        │
-                Flask Web Application
-                        │
-      ┌─────────────────┴─────────────────┐
-      │                                   │
-      ▼                                   ▼
- Prometheus                        AWS CloudWatch
-      │
-      ▼
- Grafana Dashboard
+                                           Developer
+                                │
+                                │ Git Push
+                                ▼
+                        GitHub Repository
+                                │
+                        GitHub Webhook
+                                │
+                                ▼
+                         Jenkins Pipeline
+                    (CI/CD Automation Server)
+                                │
+               ┌────────────────┴────────────────┐
+               │                                 │
+        Build Docker Image              Push Image to Docker Hub
+               │                                 │
+               └────────────────┬────────────────┘
+                                │
+                                ▼
+                         AWS EC2 Instance
+                                │
+               Pull Latest Docker Image
+                                │
+                                ▼
+                    Docker Container (Flask App)
+                                │
+                                ▼
+                     Portfolio Web Application
+                                │
+         ┌──────────────────────┼───────────────────────┐
+         │                      │                       │
+         ▼                      ▼                       ▼
+   Node Exporter          cAdvisor Metrics       Jenkins Metrics
+         │                      │                       │
+         └───────────────┬──────┴───────────────┬───────┘
+                         ▼                      │
+                    Prometheus Server           │
+                         │                      │
+                         └──────────────┬───────┘
+                                        ▼
+                                Grafana Dashboard
+
+──────────────────────────────────────────────────────────────
+
+          AWS CloudWatch         Amazon S3
+                │                   │
+        EC2 Monitoring        Backup Storage
 ```
 
 ---
