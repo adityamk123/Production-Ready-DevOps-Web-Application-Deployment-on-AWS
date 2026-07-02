@@ -13,7 +13,7 @@ The objective is to demonstrate a real-world DevOps workflow from source code ma
 ## Architecture
 
 ```
-                                           Developer
+                            Developer
                                 │
                                 │ Git Push
                                 ▼
